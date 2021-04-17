@@ -18,8 +18,9 @@ const command = require('./command');
 
 
 client.on('ready', () => {
+  console.log(`Amethyst in online!\n\nCurrent Guilds:\n===============`)
   client.guilds.cache.forEach((guild) =>{
-    console.log(`Amethyst in online!\n\nCurrent Guilds (${guild}):\n${guild.name}`)
+    console.log(`${guild.name} - ${guild.memberCount} members.`);
   })
   
 
