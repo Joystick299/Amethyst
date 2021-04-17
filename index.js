@@ -4,6 +4,7 @@ Amethyst Discord Music Bot
 v1.0
 
 Features:
+Also added on GitHub!
 Play music from provided YouTube link
 
 */
