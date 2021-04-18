@@ -1,7 +1,7 @@
 /*
 
 Amethyst Discord Music Bot
-v1.0
+v1.0.3
 
 Features:
 Also added on GitHub!
@@ -14,13 +14,14 @@ const client = new Discord.Client();
 
 const config = require('./config.json');
 const command = require('./command');
-
+const firstMessage = require('./first-message');
 
 
 client.on('ready', () => {
   console.log(`Amethyst in online!\n\nCurrent Guilds:\n===============`)
   client.guilds.cache.forEach((guild) =>{
     console.log(`${guild.name} - ${guild.memberCount} members.`);
+    
   })
   
 
@@ -43,7 +44,6 @@ client.on('ready', () => {
       const input = message.content;
       const n = input.replace('~play', '~p')
       const userInput = n.replace('~p', '').slice(1)
-      message.channel.send(`Now playing:\n${userInput}`);
       const ytdl = require('ytdl-core');
       const connection = await message.member.voice.channel.join();
       const dispatcher = connection.play(ytdl(`${userInput}`, {filter: 'audioonly' }), {
@@ -51,10 +51,26 @@ client.on('ready', () => {
       });
       dispatcher.on('start', () => {
         console.log(`${userInput} is now playing!`);
+        message.channel.messages.fetch().then(results =>{
+          message.channel.bulkDelete(results)
+        })
+      
+      const embed = new Discord.MessageEmbed()
+          .setTitle(`${userInput}`)
+          .setURL(`${userInput}`)
+          .setAuthor(message.author.username)
+          .setFooter(`Requested by: ${message.author.username}`, `${message.author.avatarURL()}`)
+
+        message.channel.send(embed)
+        firstMessage(client, '833456821590949919', `Media Controls `, ['⏯️'])
       });
+      
       dispatcher.on('finish', () => {
         console.log(`${userInput} has stopped playing!`);
         dispatcher.destroy();
+        message.channel.messages.fetch().then(results =>{
+          message.channel.bulkDelete(results)
+        })
       });
     }else{
       message.reply("You need to be in a voice channel to request a song.");
@@ -66,6 +82,9 @@ client.on('ready', () => {
     if(!message.guild) return;
     if (message.member.voice.channel){
       message.member.voice.channel.leave();
+      message.channel.messages.fetch().then(results =>{
+        message.channel.bulkDelete(results)
+      })
     }else{
       message.reply("You need to be in a voice channel to ask the bot to stop!");
     }
@@ -78,6 +97,11 @@ client.on('ready', () => {
         message.channel.bulkDelete(results)
       })
     }
+  })
+
+
+  command(client, 'embed', (message) =>{
+    
   })
 
   client.user.setPresence({
