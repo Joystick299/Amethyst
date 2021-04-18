@@ -42,7 +42,7 @@ client.on('ready', () => {
     if (message.member.voice.channel){
       const input = message.content;
       const n = input.replace('~play', '~p')
-      const userInput = n.replace('~p', '')
+      const userInput = n.replace('~p', '').slice(1)
       message.channel.send(`Now playing:\n${userInput}`);
       const ytdl = require('ytdl-core');
       const connection = await message.member.voice.channel.join();
@@ -60,7 +60,6 @@ client.on('ready', () => {
       message.reply("You need to be in a voice channel to request a song.");
     }
   })
-
 
   //Tell the bot to leave
   command(client, ['s', 'stop'], async message => {
@@ -83,7 +82,7 @@ client.on('ready', () => {
 
   client.user.setPresence({
     activity: {
-      name: 'Hello',
+      name: 'Music!',
       type: 2
     }
   })
