@@ -1,7 +1,7 @@
 /*
 
 Amethyst Discord Music Bot
-v1.0.3
+v1.0.4
 
 Features:
 Also added on GitHub!
@@ -62,14 +62,20 @@ client.on('ready', () => {
           .setFooter(`Requested by: ${message.author.username}`, `${message.author.avatarURL()}`)
 
         message.channel.send(embed)
+        client.user.setActivity({
+          name: message.autnor.username,
+          type: 2
+        })
+
         firstMessage(client, '833456821590949919', `Media Controls `, ['⏯️'])
       });
       
       dispatcher.on('finish', () => {
         console.log(`${userInput} has stopped playing!`);
         dispatcher.destroy();
-        message.channel.messages.fetch().then(results =>{
-          message.channel.bulkDelete(results)
+        client.user.setActivity({
+          name: 'Music!',
+          type: 2
         })
       });
     }else{
