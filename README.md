@@ -1,4 +1,7 @@
-# Amethyst
+# This repo has been archived and will not be maintained anymore.
+
+
+## Amethyst
 Just another Discord Bot
 
 ### Commands
